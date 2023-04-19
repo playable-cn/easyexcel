@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.alibaba</groupId>
+        <groupId>cn.playable</groupId>
         <artifactId>easyexcel-parent</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
@@ -22,7 +22,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.alibaba</groupId>
+            <groupId>cn.playable</groupId>
             <artifactId>easyexcel-core</artifactId>
             <scope>test</scope>
         </dependency>
