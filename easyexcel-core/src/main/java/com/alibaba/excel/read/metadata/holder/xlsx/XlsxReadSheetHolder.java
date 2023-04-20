@@ -42,6 +42,12 @@ public class XlsxReadSheetHolder extends ReadSheetHolder {
      */
     private PackageRelationshipCollection packageRelationshipCollection;
 
+    private boolean isSharedFormula;
+
+    private boolean isOriginalSharedFormula;
+
+    private String sharedFormulaIndex;
+
     public XlsxReadSheetHolder(ReadSheet readSheet, ReadWorkbookHolder readWorkbookHolder) {
         super(readSheet, readWorkbookHolder);
         this.tagDeque = new LinkedList<String>();

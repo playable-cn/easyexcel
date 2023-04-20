@@ -18,10 +18,16 @@ public class FormulaData {
      */
     private String formulaValue;
 
+    /**
+     * is shared formula
+     */
+    private boolean isSharedFormula;
+
     @Override
     public FormulaData clone() {
         FormulaData formulaData = new FormulaData();
         formulaData.setFormulaValue(getFormulaValue());
+        formulaData.setSharedFormula(isSharedFormula());
         return formulaData;
     }
 }

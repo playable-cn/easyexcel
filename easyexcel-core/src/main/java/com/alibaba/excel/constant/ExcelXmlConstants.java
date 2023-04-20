@@ -96,4 +96,6 @@ public class ExcelXmlConstants {
     public static final String SHAREDSTRINGS_X_RPH_TAG = "x:rPh";
     public static final String SHAREDSTRINGS_NS2_RPH_TAG = "ns2:rPh";
 
+    public static final String SHARED_FORMULA_TYPE = "shared";
+
 }
