@@ -28,9 +28,9 @@ public class CellFormulaTagHandler extends AbstractXlsxTagHandler {
             String sharedFormulaIndex = attributes.getValue(ExcelXmlConstants.SHAREDSTRINGS_SI_TAG);
             if (sharedFormulas.containsKey(sharedFormulaIndex)) {
                 xlsxReadSheetHolder.setSharedFormula(true);
-                xlsxReadSheetHolder.setSharedFormulaIndex(sharedFormulaIndex);
                 xlsxReadContext.xlsxReadSheetHolder().getTempFormula().append(sharedFormulas.get(sharedFormulaIndex));
             } else {
+                xlsxReadSheetHolder.setSharedFormulaIndex(sharedFormulaIndex);
                 xlsxReadSheetHolder.setOriginalSharedFormula(true);
             }
         }
