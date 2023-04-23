@@ -1,8 +1,11 @@
 package com.alibaba.excel.read.metadata.holder.xlsx;
 
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
+import com.alibaba.excel.metadata.data.FormulaData;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.excel.read.metadata.holder.ReadSheetHolder;
 import com.alibaba.excel.read.metadata.holder.ReadWorkbookHolder;
@@ -42,6 +45,8 @@ public class XlsxReadSheetHolder extends ReadSheetHolder {
      */
     private PackageRelationshipCollection packageRelationshipCollection;
 
+    private Map<String, FormulaData> sharedFormulas;
+
     private boolean isSharedFormula;
 
     private boolean isOriginalSharedFormula;
@@ -54,5 +59,6 @@ public class XlsxReadSheetHolder extends ReadSheetHolder {
         packageRelationshipCollection
             = ((XlsxReadWorkbookHolder)readWorkbookHolder).getPackageRelationshipCollectionMap().get(
             readSheet.getSheetNo());
+        sharedFormulas = new HashMap<>();
     }
 }

@@ -17,20 +17,24 @@ import java.util.Map;
  */
 public class CellFormulaTagHandler extends AbstractXlsxTagHandler {
 
-    private Map<String, String> sharedFormulas = new HashMap<>();
-
     @Override
     public void startElement(XlsxReadContext xlsxReadContext, String name, Attributes attributes) {
         XlsxReadSheetHolder xlsxReadSheetHolder = xlsxReadContext.xlsxReadSheetHolder();
         xlsxReadSheetHolder.setTempFormula(new StringBuilder());
+        xlsxReadSheetHolder.setSharedFormula(false);
+        xlsxReadSheetHolder.setOriginalSharedFormula(false);
+        xlsxReadSheetHolder.setSharedFormulaIndex("");
+
         String formulaType = attributes.getValue(ExcelXmlConstants.SHAREDSTRINGS_T_TAG);
         if (ExcelXmlConstants.SHARED_FORMULA_TYPE.equalsIgnoreCase(formulaType)) {
             String sharedFormulaIndex = attributes.getValue(ExcelXmlConstants.SHAREDSTRINGS_SI_TAG);
+            xlsxReadSheetHolder.setSharedFormulaIndex(sharedFormulaIndex);
+            Map<String, FormulaData> sharedFormulas = xlsxReadSheetHolder.getSharedFormulas();
             if (sharedFormulas.containsKey(sharedFormulaIndex)) {
                 xlsxReadSheetHolder.setSharedFormula(true);
-                xlsxReadContext.xlsxReadSheetHolder().getTempFormula().append(sharedFormulas.get(sharedFormulaIndex));
+                FormulaData originalSharedFormulaData = sharedFormulas.get(sharedFormulaIndex);
+                xlsxReadSheetHolder.getTempFormula().append(originalSharedFormulaData.getFormulaValue());
             } else {
-                xlsxReadSheetHolder.setSharedFormulaIndex(sharedFormulaIndex);
                 xlsxReadSheetHolder.setOriginalSharedFormula(true);
             }
         }
@@ -40,11 +44,25 @@ public class CellFormulaTagHandler extends AbstractXlsxTagHandler {
     public void endElement(XlsxReadContext xlsxReadContext, String name) {
         XlsxReadSheetHolder xlsxReadSheetHolder = xlsxReadContext.xlsxReadSheetHolder();
         FormulaData formulaData = new FormulaData();
-        if (xlsxReadSheetHolder.isOriginalSharedFormula()) {
-            sharedFormulas.put(xlsxReadSheetHolder.getSharedFormulaIndex(), xlsxReadSheetHolder.getTempFormula().toString());
-        }
-        formulaData.setSharedFormula(xlsxReadSheetHolder.isSharedFormula());
         formulaData.setFormulaValue(xlsxReadSheetHolder.getTempFormula().toString());
+        formulaData.setSharedFormula(xlsxReadSheetHolder.isSharedFormula());
+        formulaData.setSharedRowIndex(xlsxReadSheetHolder.getRowIndex());
+        formulaData.setSharedColumnIndex(xlsxReadSheetHolder.getColumnIndex());
+
+        Map<String, FormulaData> sharedFormulas = xlsxReadSheetHolder.getSharedFormulas();
+        if (xlsxReadSheetHolder.isOriginalSharedFormula()) {
+            sharedFormulas.put(xlsxReadSheetHolder.getSharedFormulaIndex(), formulaData.clone());
+        }
+
+        if (xlsxReadSheetHolder.isSharedFormula()) {
+            String sharedFormulaIndex = xlsxReadSheetHolder.getSharedFormulaIndex();
+            if (sharedFormulas.containsKey(sharedFormulaIndex)) {
+                FormulaData originalSharedFormulaData = sharedFormulas.get(sharedFormulaIndex);
+                formulaData.setSharedRowIndex(originalSharedFormulaData.getSharedRowIndex());
+                formulaData.setSharedColumnIndex(originalSharedFormulaData.getSharedColumnIndex());
+            }
+        }
+
         xlsxReadSheetHolder.getTempCellData().setFormulaData(formulaData);
     }
 

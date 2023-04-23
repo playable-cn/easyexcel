@@ -23,11 +23,23 @@ public class FormulaData {
      */
     private boolean isSharedFormula;
 
+    /**
+     * shared formula cell row index
+     */
+    private Integer sharedRowIndex;
+
+    /**
+     * shared formula cell column index
+     */
+    private Integer sharedColumnIndex;
+
     @Override
     public FormulaData clone() {
         FormulaData formulaData = new FormulaData();
         formulaData.setFormulaValue(getFormulaValue());
         formulaData.setSharedFormula(isSharedFormula());
+        formulaData.setSharedRowIndex(getSharedRowIndex());
+        formulaData.setSharedColumnIndex(getSharedColumnIndex());
         return formulaData;
     }
 }
